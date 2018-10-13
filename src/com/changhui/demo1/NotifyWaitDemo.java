@@ -6,7 +6,9 @@ class ShareData {
 
     public synchronized void increment() throws InterruptedException {
         //判断
-        if (num != 0) {
+        //多线程中重要的判断不要用if,要用while
+        //if (num != 0) {
+        while (num != 0) {
             this.wait();
         }
         //干活
@@ -18,7 +20,8 @@ class ShareData {
     }
 
     public synchronized void decrement() throws InterruptedException {
-        if (num == 0) {
+        // if (num == 0) {
+        while (num == 0) {
             this.wait();
         }
         --num;
@@ -36,26 +39,50 @@ public class NotifyWaitDemo {
         ShareData shareData = new ShareData();
 
         new Thread(() -> {
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 10; i++) {
                 try {
+//                    Thread.sleep(200);
                     shareData.increment();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
-        }, "increment").start();
+        }, "AA").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
                 try {
+//                    Thread.sleep(300);
                     shareData.decrement();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }, "decrement").start();
+        }, "BB").start();
 
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+//                    Thread.sleep(400);
+                    shareData.increment();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, "CC").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                try {
+//                    Thread.sleep(500);
+                    shareData.decrement();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "DD").start();
 
     }
 
