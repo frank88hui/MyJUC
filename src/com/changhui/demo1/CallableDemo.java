@@ -36,9 +36,6 @@ public class CallableDemo {
 
     }
 
-    private static Integer call() {
-        System.out.println(100);
-    }
 }
 
 
