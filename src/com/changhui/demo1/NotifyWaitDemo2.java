@@ -13,7 +13,7 @@ class ShareData2 {
     private Condition condition = lock.newCondition();
 
 
-    public void increment() throws InterruptedException {
+    public void increment() {
 
 
         lock.lock();
@@ -37,7 +37,7 @@ class ShareData2 {
 
     }
 
-    public void decrement() throws InterruptedException {
+    public void decrement() {
 
 
         lock.lock();
@@ -67,42 +67,26 @@ class ShareData2 {
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                try {
-                    shareData.increment();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                shareData.increment();
             }
         }, "AA").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                try {
-                    shareData.decrement();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                shareData.decrement();
             }
         }, "BB").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                try {
-                    shareData.increment();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
+                shareData.increment();
             }
         }, "CC").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                try {
-                    shareData.decrement();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                shareData.decrement();
             }
         }, "DD").start();
     }
